@@ -1,6 +1,3 @@
-Here is the updated `README.md`. I have restructured the **Installation** section to clearly separate "Linux/macOS" from "Windows (WSL)" instructions, making it easy for users on any platform to get started.
-
-```markdown
 # Prophet Forecasting for Portfolio Optimisation
 
 ## Project Overview
