@@ -25,7 +25,7 @@ def get_supabase_client() -> Client | None:
     """
     url = os.environ.get("SUPABASE_URL")
     key = os.environ.get("SUPABASE_KEY")
-    
+
     if not url or not key:
         logger.warning("Supabase credentials not found in environment variables")
         return None
