@@ -15,7 +15,6 @@ from src.settings import SUPABASE_TABLE_NAME
 
 logger = logging.getLogger(__name__)
 
-
 def get_supabase_client() -> Client | None:
     """
     Create and return Supabase client from environment variables.
