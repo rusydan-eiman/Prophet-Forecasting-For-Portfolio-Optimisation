@@ -1,3 +1,6 @@
+Here is the updated `README.md`. I have restructured the **Installation** section to clearly separate "Linux/macOS" from "Windows (WSL)" instructions, making it easy for users on any platform to get started.
+
+```markdown
 # Prophet Forecasting for Portfolio Optimisation
 
 ## Project Overview
@@ -39,13 +42,17 @@ Markowitz portfolio optimisation, also known as Modern Portfolio Theory (MPT), i
 
 **The Optimisation Problem:**
 
+
 ```
+
 Maximize: μᵀw - λ(wᵀΣw)
 
 Subject to:
-- Σwᵢ = 1 (weights sum to 1)
-- wᵢ ≥ 0 (long-only portfolio, optional)
-- Additional constraints (sector limits, etc.)
+
+* Σwᵢ = 1 (weights sum to 1)
+* wᵢ ≥ 0 (long-only portfolio, optional)
+* Additional constraints (sector limits, etc.)
+
 ```
 
 Where:
@@ -64,48 +71,141 @@ Where:
 
 ## Project Workflow
 
+
 ```
+
 Historical Data Extraction
-    ↓
+↓
 Data Preprocessing
-    ↓
+↓
 Prophet Model Training
-    ↓
+↓
 Price Forecasting
-    ↓
+↓
 Markowitz Optimisation
-    ↓
+↓
 Optimal Portfolio Weights
-    ↓
+↓
 Results Saved to Supabase
-    ↓
+↓
 Streamlit Dashboard Hosted on Hostinger VPS
+
 ```
+
 ## Installation
 
-### Standard Installation
+### Prerequisites
+
+- **Python 3.12+**
+- **Poetry** (for dependency management)
+- **Supabase Account** (for storing results)
+- **CircleCI Account** (optional, for CI/CD)
+
+### 1. Environment Setup
+
+#### Option A: Linux & macOS
+If you are on Linux or macOS, you can install Python and Poetry directly. I recommend using `pyenv` to manage Python versions.
 
 ```bash
-# Install dependencies using Poetry
-make install-dev
+# Install Pyenv (if not installed)
+curl [https://pyenv.run](https://pyenv.run) | bash
 
-# Or manually
-poetry install
+# Install Python 3.12
+pyenv install 3.12
+pyenv global 3.12
+
+# Install Poetry
+curl -sSL [https://install.python-poetry.org](https://install.python-poetry.org) | python3 -
+
 ```
 
-### Requirements
+#### Option B: Windows (via WSL)
 
-- Python 3.12+
-  - I recommend installing through [PyEnv](https://github.com/pyenv/pyenv)
-  - PyEnv can be installed through [Brew](https://brew.sh/).
-- Poetry
-  - [Basic usage](https://python-poetry.org/docs/basic-usage/)
-- CircleCI account
-  - [Setup guide](https://circleci.com/blog/setting-up-continuous-integration-with-github/)
-- Supabase account and project
-  - [Starting guide](https://supabase.com/docs/guides/getting-started)
-- [Hostinger VPS](https://www.hostinger.com/vps-hosting)
-  - [Guide to deploying a Streamlit App on Hostinger VPS](https://egorhowell.notion.site/Streamlit-Deployment-Guide-on-Hostinger-VPS-2ad2dbb15bea808c9683f6da61e3a4e8?source=copy_link)
+**This project is optimized for Linux environments.** If you are using Windows, it is highly recommended to use **WSL2 (Windows Subsystem for Linux)**. This gives you a real Ubuntu Linux environment inside Windows.
+
+1. **Install WSL:**
+Open PowerShell as Administrator and run:
+```powershell
+wsl --install
+
+```
+
+
+*Restart your computer if prompted.*
+2. **Open Ubuntu:**
+Search for "Ubuntu" in your Start menu and open it. You are now in a Linux terminal!
+3. **Install Prerequisites (inside Ubuntu):**
+```bash
+# Update packages
+sudo apt update && sudo apt upgrade -y
+
+# Install Python build dependencies
+sudo apt install -y make build-essential libssl-dev zlib1g-dev \
+libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm \
+libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev \
+libffi-dev liblzma-dev
+
+# Install Pyenv
+curl [https://pyenv.run](https://pyenv.run) | bash
+
+# (Follow the on-screen instructions to add pyenv to your shell profile)
+
+# Install Python 3.12
+pyenv install 3.12
+pyenv global 3.12
+
+# Install Poetry
+curl -sSL [https://install.python-poetry.org](https://install.python-poetry.org) | python3 -
+
+```
+
+
+
+### 2. Install Project Dependencies
+
+Once your environment (Linux, Mac, or WSL) is ready, clone the repo and install dependencies:
+
+```bash
+# Clone the repository
+git clone [https://github.com/yourusername/Prophet-Forecasting-For-Portfolio-Optimisation.git](https://github.com/yourusername/Prophet-Forecasting-For-Portfolio-Optimisation.git)
+cd Prophet-Forecasting-For-Portfolio-Optimisation
+
+# Install dependencies
+make install-dev
+# OR manually:
+poetry install
+
+```
+
+### 3. Configure Environment Variables
+
+You must provide your Supabase credentials for the project to run.
+
+**Method 1: Using a `.env` file (Recommended for Local Dev)**
+Create a `.env` file in the root directory:
+
+```bash
+cp .env.example .env  # If you have an example file
+# OR create it manually
+nano .env
+
+```
+
+Add your credentials inside `.env`:
+
+```ini
+SUPABASE_URL="your_supabase_url"
+SUPABASE_KEY="your_supabase_anon_key"
+
+```
+
+**Method 2: Using Terminal Exports (Temporary)**
+
+```bash
+export SUPABASE_URL="your_supabase_url"
+export SUPABASE_KEY="your_supabase_anon_key"
+
+```
 
 ## Usage
 
@@ -113,22 +213,24 @@ poetry install
 
 ```bash
 poetry run python -m src.main
+
 ```
 
 Or using the Makefile:
 
 ```bash
 make run
+
 ```
 
 ### Configuration
 
 Edit `src/settings.py` to customise:
 
-- **Portfolio Tickers**: Modify `PORTFOLIO_TICKERS` list
-- **Risk Aversion**: Adjust `RISK_AVERSION` (higher = more risk averse)
-- **Minimum Allocation**: Change `MINIMUM_ALLOCATION` (minimum weight per asset)
-- **Date Range**: Update `START_DATE` and `END_DATE` for historical data
+* **Portfolio Tickers**: Modify `PORTFOLIO_TICKERS` list
+* **Risk Aversion**: Adjust `RISK_AVERSION` (higher = more risk averse)
+* **Minimum Allocation**: Change `MINIMUM_ALLOCATION` (minimum weight per asset)
+* **Date Range**: Update `START_DATE` and `END_DATE` for historical data
 
 Example:
 
@@ -138,6 +240,7 @@ PORTFOLIO_TICKERS = ["AAPL", "MSFT", "GOOGL", "TSLA", "AMZN"]
 RISK_AVERSION = 3 
 MINIMUM_ALLOCATION = 0.05 
 START_DATE = "2024-01-01"
+
 ```
 
 ### Programmatic Usage
@@ -155,6 +258,7 @@ print(f"Optimal Weights: {result['weights']}")
 print(f"Predicted Returns: {result['predicted_returns']}")
 print(f"Current Prices: {result['current_prices']}")
 print(f"Prediction Date: {result['prediction_date']}")
+
 ```
 
 ### Running the Streamlit Dashboard
@@ -163,19 +267,25 @@ The Streamlit dashboard reads from Supabase to display historical predictions, p
 
 ```bash
 poetry run streamlit run src/streamlit_app.py
+
 ```
 
 Or using the Makefile:
 
 ```bash
 make dashboard
+
 ```
 
 The dashboard allows you to:
-- View portfolio weights and predictions for any date
-- Analywe individual stock performance over time
-- Compare predicted vs actual prices
-- Track prediction accuracy metrics
+
+* View portfolio weights and predictions for any date
+* Analyze individual stock performance over time
+* Compare predicted vs actual prices
+* Track prediction accuracy metrics
 
 **Note:** The dashboard requires Supabase to be configured and populated with data from previous optimization runs.
 
+```
+
+```
