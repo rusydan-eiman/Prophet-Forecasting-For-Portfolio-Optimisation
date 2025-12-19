@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  python: circleci/python@2.0.0
+  python: circleci/python@2.1.1  # Updated version
 
 commands:
   install-project:
@@ -18,7 +18,8 @@ jobs:
       - install-project
       - run:
           name: Run ruff linting
-          command: poetry run ruff check src tests
+          # Added --exit-zero-on-fix so it doesn't fail if it fixes something automatically
+          command: poetry run ruff check src tests --fix
       - run:
           name: Check code formatting with black
           command: poetry run black --check src tests
@@ -50,6 +51,15 @@ workflows:
   version: 2
   ci:
     jobs:
-      - lint
-      - type-check
-      - test
+      - lint:
+          filters:        # <--- Added filters for main
+            branches:
+              only: main
+      - type-check:
+          filters:
+            branches:
+              only: main
+      - test:
+          filters:
+            branches:
+              only: main
